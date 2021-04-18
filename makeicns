@@ -1,0 +1,32 @@
+#!/bin/bash
+echo "======MacOS的icns图像制作======"
+img_name=$1
+out_name=$2
+
+
+if [ -n "${img_name}" ] && [ -n "${out_name}" ]
+then
+	img_suffix=${1#*.}
+
+	tmp_dir="tmp.iconset"
+	mkdir ${tmp_dir}
+
+	sips -z 16 16     ${img_name} --out ${tmp_dir}/icon_16x16.${img_suffix}
+	sips -z 32 32     ${img_name} --out ${tmp_dir}/icon_16x16@2x.${img_suffix}
+	sips -z 32 32     ${img_name} --out ${tmp_dir}/icon_32x32.${img_suffix}
+	sips -z 64 64     ${img_name} --out ${tmp_dir}/icon_32x32@2x.${img_suffix}
+	sips -z 128 128   ${img_name} --out ${tmp_dir}/icon_128x128.${img_suffix}
+	sips -z 256 256   ${img_name} --out ${tmp_dir}/icon_128x128@2x.${img_suffix}
+	sips -z 256 256   ${img_name} --out ${tmp_dir}/icon_256x256.${img_suffix}
+	sips -z 512 512   ${img_name} --out ${tmp_dir}/icon_256x256@2x.${img_suffix}
+	sips -z 512 512   ${img_name} --out ${tmp_dir}/icon_512x512.${img_suffix}
+	sips -z 1024 1024   ${img_name} --out ${tmp_dir}/icon_512x512@2x.${img_suffix}
+
+	iconutil -c icns ${tmp_dir} -o ${out_name}
+
+	rm -rf ${tmp_dir}
+else
+	echo "example: makeicns logo.png logo.icns"
+fi
+
+
